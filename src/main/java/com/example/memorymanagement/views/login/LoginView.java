@@ -6,6 +6,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteParameters;
 import com.vaadin.flow.router.RouterLink;
 
 @Route(value = "", layout = MainView.class)
@@ -13,10 +14,10 @@ import com.vaadin.flow.router.RouterLink;
 public class LoginView extends HorizontalLayout {
 
     public LoginView() {
-        addClassName("login-view");
+        this.addClassName("login-view");
         final var name = new TextField("Your name");
-        final var sayHello = new RouterLink("Log in", MemoryManagementView.class);
-        add(name, sayHello);
-        setVerticalComponentAlignment(Alignment.END, name, sayHello);
+        final var logIn = new RouterLink("Log in", MemoryManagementView.class);
+        this.add(name, logIn);
+        this.setVerticalComponentAlignment(Alignment.END, name, logIn);
     }
 }

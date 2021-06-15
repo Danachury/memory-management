@@ -31,13 +31,15 @@ import java.util.Optional;
 public class MainView extends AppLayout {
 
     private final Tabs menu;
+    private final Avatar avatar;
     private H1 viewTitle;
 
     public MainView() {
-        setPrimarySection(Section.DRAWER);
-        addToNavbar(true, createHeaderContent());
-        menu = createMenu();
-        addToDrawer(createDrawerContent(menu));
+        this.avatar = new Avatar();
+        this.setPrimarySection(Section.DRAWER);
+        this.addToNavbar(true, createHeaderContent());
+        this.menu = createMenu();
+        this.addToDrawer(this.createDrawerContent(this.menu));
     }
 
     private Component createHeaderContent() {
@@ -48,9 +50,9 @@ public class MainView extends AppLayout {
         layout.setSpacing(false);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
         layout.add(new DrawerToggle());
-        viewTitle = new H1();
-        layout.add(viewTitle);
-        layout.add(new Avatar());
+        this.viewTitle = new H1();
+        layout.add(this.viewTitle);
+        layout.add(this.avatar);
         return layout;
     }
 
@@ -76,7 +78,7 @@ public class MainView extends AppLayout {
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         tabs.addThemeVariants(TabsVariant.LUMO_MINIMAL);
         tabs.setId("tabs");
-        tabs.add(createMenuItems());
+        tabs.add(this.createMenuItems());
         return tabs;
     }
 
@@ -97,17 +99,20 @@ public class MainView extends AppLayout {
     @Override
     protected void afterNavigation() {
         super.afterNavigation();
-        getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
-        viewTitle.setText(getCurrentPageTitle());
+        this.getTabForComponent(this.getContent()).ifPresent(this.menu::setSelectedTab);
+        this.viewTitle.setText(this.getCurrentPageTitle());
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
-        return menu.getChildren().filter(tab -> ComponentUtil.getData(tab, Class.class).equals(component.getClass()))
-            .findFirst().map(Tab.class::cast);
+        return this.menu
+            .getChildren()
+            .filter(tab -> ComponentUtil.getData(tab, Class.class).equals(component.getClass()))
+            .findFirst()
+            .map(Tab.class::cast);
     }
 
     private String getCurrentPageTitle() {
-        PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
+        final var title = this.getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
     }
 }
