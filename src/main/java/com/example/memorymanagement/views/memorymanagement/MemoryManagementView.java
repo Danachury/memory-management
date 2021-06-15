@@ -1,16 +1,23 @@
 package com.example.memorymanagement.views.memorymanagement;
 
+import com.example.memorymanagement.views.main.MainView;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.littemplate.LitTemplate;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.template.Id;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
-import com.example.memorymanagement.views.main.MainView;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static com.example.memorymanagement.views.memorymanagement.Memory.MAX_SIZE;
 
 @Route(value = "memory", layout = MainView.class)
 @PageTitle("Memory Management")
@@ -19,24 +26,79 @@ import com.example.memorymanagement.views.main.MainView;
 public class MemoryManagementView extends LitTemplate implements HasComponents, HasStyle {
 
     @Id
-    private Select<String> sortBy;
+    private Select<Character> processesName;
+    @Id
+    private Select<Short> processesSize;
+    @Id
+    private Button startProcessButton;
+    @Id
+    private Button clearButton;
+
+    private final PageFrame pageFrame = new PageFrame();
+    private final ProcessesView processesView = new ProcessesView();
 
     public MemoryManagementView() {
-        addClassNames("memory-management-view", "flex", "flex-col", "h-full");
-        sortBy.setItems("Popularity", "Newest first", "Oldest first");
-        sortBy.setValue("Popularity");
+        this.addClassNames("memory-management-view", "flex", "flex-col", "h-full");
+        this.processesName.setItems('A', 'B', 'C', 'D', 'E', 'F');
+        final var sizeItems = IntStream
+            .rangeClosed(1, MAX_SIZE)
+            .boxed()
+            .map(Integer::shortValue)
+            .collect(Collectors.toList());
+        this.processesSize.setItems(sizeItems);
 
-        add(new ImageCard("Snow mountains under stars",
-                "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
-        add(new ImageCard("Snow covered mountain",
-                "https://images.unsplash.com/photo-1512273222628-4daea6e55abb?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
-        add(new ImageCard("River between mountains",
-                "https://images.unsplash.com/photo-1536048810607-3dc7f86981cb?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80"));
-        add(new ImageCard("Milky way on mountains",
-                "https://images.unsplash.com/photo-1515705576963-95cad62945b6?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80"));
-        add(new ImageCard("Mountain with fog",
-                "https://images.unsplash.com/photo-1513147122760-ad1d5bf68cdb?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"));
-        add(new ImageCard("Mountain at night",
-                "https://images.unsplash.com/photo-1562832135-14a35d25edef?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=815&q=80"));
+        this.init();
+    }
+
+    private void init() {
+        this.add(this.pageFrame);
+        this.add(this.processesView);
+        this.startProcessButton.addClickListener(event -> {
+            final var processes = IntStream
+                .range(0, this.processesSize.getValue())
+                .mapToObj(i -> new Process(this.processesName.getValue()))
+                .collect(Collectors.toList());
+            this.startProcess(processes);
+            this.processesName.clear();
+            this.processesSize.clear();
+        });
+        this.startProcessButton.setEnabled(false);
+        this.clearButton.addClickListener(event -> this.onClearPageFrame());
+        this.processesName.addValueChangeListener(event -> this.startProcessButton.setEnabled(this.processesSize.getOptionalValue().isPresent()));
+        this.processesSize.addValueChangeListener(event -> this.startProcessButton.setEnabled(this.processesName.getOptionalValue().isPresent()));
+        this.processesView.getWpRunButton().addClickListener(event -> startWaitingProcess());
+    }
+
+    private void startWaitingProcess() {
+        final var processesSelected = this.processesView.getProcessesSelected();
+        final var updated = this.startProcess(processesSelected);
+        if (updated)
+            this.processesView.removeWaitingProcesses(processesSelected);
+    }
+
+    private boolean startProcess(List<Process> processes) {
+        final var procIds = processes.stream().map(Process::getId).collect(Collectors.joining(","));
+        if (!this.addToPageFrame(processes)) {
+            this.processesView.addToWaitingProcess(processes);
+            Notification.show(
+                "Processes [" + procIds + "] Added to waiting list",
+                3000,
+                Notification.Position.TOP_END
+            );
+            return false;
+        }
+        this.processesView.addToActiveProcess(processes);
+        Notification.show("Processes [" + procIds + "] Started successfully.", 3000, Notification.Position.TOP_END);
+        return true;
+    }
+
+    private boolean addToPageFrame(List<Process> processes) {
+        return this.pageFrame.addProcess(processes);
+    }
+
+    private void onClearPageFrame() {
+        this.pageFrame.clear();
+        this.processesView.clearActiveProcesses();
+        Notification.show("List of Processes Cleaned.", 3000, Notification.Position.TOP_END);
     }
 }

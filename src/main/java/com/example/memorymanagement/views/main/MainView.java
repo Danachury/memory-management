@@ -1,28 +1,27 @@
 package com.example.memorymanagement.views.main;
 
-import java.util.Optional;
-
+import com.example.memorymanagement.views.login.LoginView;
+import com.example.memorymanagement.views.memorymanagement.MemoryManagementView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.PageTitle;
-import com.example.memorymanagement.views.main.MainView;
-import com.example.memorymanagement.views.login.LoginView;
-import com.example.memorymanagement.views.memorymanagement.MemoryManagementView;
+import com.vaadin.flow.theme.lumo.Lumo;
+
+import java.util.Optional;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -42,7 +41,7 @@ public class MainView extends AppLayout {
     }
 
     private Component createHeaderContent() {
-        HorizontalLayout layout = new HorizontalLayout();
+        final var layout = new HorizontalLayout();
         layout.setClassName("sidemenu-header");
         layout.getThemeList().set("dark", true);
         layout.setWidthFull();
@@ -56,14 +55,14 @@ public class MainView extends AppLayout {
     }
 
     private Component createDrawerContent(Tabs menu) {
-        VerticalLayout layout = new VerticalLayout();
+        final var layout = new VerticalLayout();
         layout.setClassName("sidemenu-menu");
         layout.setSizeFull();
         layout.setPadding(false);
         layout.setSpacing(false);
         layout.getThemeList().set("spacing-s", true);
         layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        HorizontalLayout logoLayout = new HorizontalLayout();
+        final var logoLayout = new HorizontalLayout();
         logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         logoLayout.add(new Image("images/logo.png", "Memory Management logo"));
@@ -73,7 +72,7 @@ public class MainView extends AppLayout {
     }
 
     private Tabs createMenu() {
-        final Tabs tabs = new Tabs();
+        final var tabs = new Tabs();
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         tabs.addThemeVariants(TabsVariant.LUMO_MINIMAL);
         tabs.setId("tabs");
@@ -83,11 +82,11 @@ public class MainView extends AppLayout {
 
     private Component[] createMenuItems() {
         return new Tab[]{createTab("Login", LoginView.class),
-                createTab("Memory Management", MemoryManagementView.class)};
+            createTab("Memory Management", MemoryManagementView.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
-        final Tab tab = new Tab();
+        final var tab = new Tab();
         tab.add(new RouterLink(text, navigationTarget));
         ComponentUtil.setData(tab, Class.class, navigationTarget);
         return tab;
@@ -102,7 +101,7 @@ public class MainView extends AppLayout {
 
     private Optional<Tab> getTabForComponent(Component component) {
         return menu.getChildren().filter(tab -> ComponentUtil.getData(tab, Class.class).equals(component.getClass()))
-                .findFirst().map(Tab.class::cast);
+            .findFirst().map(Tab.class::cast);
     }
 
     private String getCurrentPageTitle() {
