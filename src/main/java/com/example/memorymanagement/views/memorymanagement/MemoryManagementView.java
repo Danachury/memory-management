@@ -99,6 +99,7 @@ public class MemoryManagementView extends LitTemplate implements HasComponents, 
     private void onClearPageFrame() {
         this.pageFrame.clear();
         this.processesView.clearActiveProcesses();
+        this.processesView.clearWaitingProcesses();
         Notification.show("List of Processes Cleaned.", 3000, Notification.Position.TOP_END);
     }
 }
