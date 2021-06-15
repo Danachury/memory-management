@@ -22,7 +22,7 @@ import static com.example.memorymanagement.views.memorymanagement.Memory.MAX_SIZ
 public class PageFrame extends HorizontalLayout {
 
     private final Button terminateButton = new Button("Terminate");
-    private final Button clearButton = new Button("Clear");
+    private final Button clearButton = new Button("Clear All");
     private final Span count = new Span("0");
     private final Grid<Process> grid = new Grid<>();
 
