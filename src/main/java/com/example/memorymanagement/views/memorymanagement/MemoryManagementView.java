@@ -6,6 +6,7 @@ import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.select.Select;
@@ -33,6 +34,10 @@ public class MemoryManagementView extends LitTemplate implements HasComponents, 
     private Button startProcessButton;
     @Id
     private Button clearButton;
+    @Id
+    private Span ramSize;
+    @Id
+    private Span osName;
 
     private final PageFrame pageFrame = new PageFrame();
     private final ProcessesView processesView = new ProcessesView();
@@ -51,6 +56,8 @@ public class MemoryManagementView extends LitTemplate implements HasComponents, 
     }
 
     private void init() {
+        this.ramSize.setText(MAX_SIZE + "GB RAM Available");
+        this.osName.setText(System.getProperty("os.name"));
         this.add(this.pageFrame);
         this.add(this.processesView);
         this.startProcessButton.addClickListener(event -> {

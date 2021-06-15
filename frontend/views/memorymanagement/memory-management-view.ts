@@ -20,7 +20,12 @@ export class MemoryManagementView extends LitElement {
           <vaadin-horizontal-layout class="items-center justify-between">
              <vaadin-vertical-layout>
                 <h2 class="mb-0 mt-xl text-3xl">Memory Pagination</h2>
-                <p class="mb-xl mt-0 text-secondary">Memory Pagination Example</p>
+                <p class="mb-xl mt-0 text-secondary">
+                   Memory Pagination Example
+                   <br>
+                   <span class="mb-xl mt-0 text-s font-semibold capitalize" id="osName"></span>
+                   <span class="mb-xl mt-0 text-s font-extralight" id="ramSize"></span>
+                </p>
              </vaadin-vertical-layout>
           </vaadin-horizontal-layout>
           <vaadin-horizontal-layout class="flex flex-end gap-m">
