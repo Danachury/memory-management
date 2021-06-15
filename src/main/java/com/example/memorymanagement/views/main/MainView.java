@@ -81,8 +81,10 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Login", LoginView.class),
-            createTab("Memory Management", MemoryManagementView.class)};
+        return new Tab[]{
+            createTab("Login", LoginView.class),
+            createTab("Memory Management", MemoryManagementView.class)
+        };
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
