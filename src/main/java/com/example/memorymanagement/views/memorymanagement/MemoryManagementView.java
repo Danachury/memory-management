@@ -33,8 +33,6 @@ public class MemoryManagementView extends LitTemplate implements HasComponents, 
     @Id
     private Button startProcessButton;
     @Id
-    private Button clearButton;
-    @Id
     private Span ramSize;
     @Id
     private Span osName;
@@ -70,7 +68,7 @@ public class MemoryManagementView extends LitTemplate implements HasComponents, 
             this.processesSize.clear();
         });
         this.startProcessButton.setEnabled(false);
-        this.clearButton.addClickListener(event -> this.onClearPageFrame());
+        this.pageFrame.getClearButton().addClickListener(event -> this.onClearPageFrame());
         this.processesName.addValueChangeListener(event -> this.startProcessButton.setEnabled(this.processesSize.getOptionalValue().isPresent()));
         this.processesSize.addValueChangeListener(event -> this.startProcessButton.setEnabled(this.processesName.getOptionalValue().isPresent()));
         this.processesView.getWpRunButton().addClickListener(event -> startWaitingProcess());

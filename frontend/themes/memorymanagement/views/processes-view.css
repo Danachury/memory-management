@@ -1,0 +1,9 @@
+processes-view {
+    display: flex;
+    flex: 1 1 50%;
+}
+
+processes-view > div {
+    margin: 0 1em;
+    flex: 1 1 0;
+}

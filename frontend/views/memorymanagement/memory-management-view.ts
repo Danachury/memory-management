@@ -16,11 +16,11 @@ export class MemoryManagementView extends LitElement {
 
   render() {
     return html`
-       <main class="max-w-screen-lg mx-auto pb-l px-l">
+       <main class="max-w-screen-x-lg pb-l px-l">
           <vaadin-horizontal-layout class="items-center justify-between">
              <vaadin-vertical-layout>
                 <h2 class="mb-0 mt-xl text-3xl">Memory Pagination</h2>
-                <p class="mb-xl mt-0 text-secondary">
+                <p class="mb-l mt-0 text-secondary">
                    Memory Pagination Example
                    <br>
                    <span class="mb-xl mt-0 text-s font-semibold capitalize" id="osName"></span>
@@ -28,13 +28,15 @@ export class MemoryManagementView extends LitElement {
                 </p>
              </vaadin-vertical-layout>
           </vaadin-horizontal-layout>
-          <vaadin-horizontal-layout class="flex flex-end gap-m">
+          <hr>
+          <vaadin-form-layout class="flex gap-l flex-wrap mb-xl">
              <vaadin-select label="Process Name" id="processesName"></vaadin-select>
              <vaadin-select label="Quantity" id="processesSize"></vaadin-select>
-             <vaadin-button id="startProcessButton">Start Process</vaadin-button>
-          </vaadin-horizontal-layout>
-          <vaadin-button id="clearButton">Clear</vaadin-button>
-          <vaadin-horizontal-layout class="gap-m grid list-none m-0 p-0">
+             <span>
+                <vaadin-button id="startProcessButton">Start Process</vaadin-button>
+             </span>
+          </vaadin-form-layout>
+          <vaadin-horizontal-layout class="flex gap-m">
              <slot></slot>
           </vaadin-horizontal-layout>
        </main>

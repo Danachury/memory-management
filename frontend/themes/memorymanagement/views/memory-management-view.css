@@ -11,3 +11,7 @@
   background-color: var(--lumo-base-color);
   box-shadow: var(--lumo-box-shadow-s);
 }
+
+page-frame {
+  flex: 1 1 30%;
+}

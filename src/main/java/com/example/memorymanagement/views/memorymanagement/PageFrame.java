@@ -22,6 +22,7 @@ import static com.example.memorymanagement.views.memorymanagement.Memory.MAX_SIZ
 public class PageFrame extends HorizontalLayout {
 
     private final Button terminateButton = new Button("Terminate");
+    private final Button clearButton = new Button("Clear");
     private final Span count = new Span("0");
     private final Grid<Process> grid = new Grid<>();
 
@@ -47,9 +48,8 @@ public class PageFrame extends HorizontalLayout {
                 .toArray(new Process[MAX_SIZE]);
             this.updateUI();
         });
-        this.add(h4);
-        this.add(this.terminateButton);
-        this.add(this.grid);
+        this.clearButton.addClassName("mx-s");
+        this.add(h4, this.terminateButton, this.clearButton, this.grid);
     }
 
     public boolean addProcess(List<Process> processes) {
