@@ -24,7 +24,6 @@ public class ProcessesView extends LitTemplate {
     private Span apCount;
     @Id
     private Span wpCount;
-
     @Id("activeProcesses")
     private Grid<Process> apGrid;
     @Id("waitingProcesses")

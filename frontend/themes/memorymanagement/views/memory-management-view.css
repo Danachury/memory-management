@@ -11,7 +11,3 @@
   background-color: var(--lumo-base-color);
   box-shadow: var(--lumo-box-shadow-s);
 }
-
-:host(memory-management-view) .red-text {
-  color: red;
-}
