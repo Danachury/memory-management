@@ -7,10 +7,26 @@ The project is a standard Maven project, so you can import it to your IDE of cho
 
 This project was created from https://start.vaadin.com.
 
+## Requirements
+- Maven
+- Java 11
+
 ## Running and debugging the application
 
 ### Running the application from the command line.
 To run from the command line, use `mvn` and open http://localhost:8080 in your browser.
+
+If you want to run `.jar` use:
+
+```shell
+mvn clean package
+```
+
+After:
+
+```shell
+java -jar target/memorymanagement-1.0-SNAPSHOT.jar
+```
 
 ### Running and debugging the application in Intellij IDEA
 - Locate the Application.java class in the Project view. It is in the src folder, under the main package's root.
