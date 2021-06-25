@@ -1,0 +1,3 @@
+mavenDockerBuildPlugin {
+    javaVersion = 11
+}
