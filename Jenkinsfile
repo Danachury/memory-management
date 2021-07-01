@@ -4,4 +4,5 @@ mavenDockerBuildPlugin {
     javaVersion = 11
     dockerfile = 'Dockerfile'
     emailUser = 'denilson.anachury@appgate.com'
+    localBuild = true
 }
